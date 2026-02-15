@@ -27,8 +27,8 @@ func main() {
 		// Email, Password
 
 		type MeRequest struct {
-			Email string `json: "email" binding: "required"`
-			Password string `json: password"`
+			Email string `json:"email" binding:"required"`
+			Password string `json: "password"`
 		}
 		var meRequest MeRequest
 
@@ -36,14 +36,70 @@ func main() {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
 			})
+			return
 		}
-
-		c.BindJSON(&meRequest)
 
 		c.JSON(http.StatusOK, gin.H{
 			"email": meRequest.Email,
 			"password": meRequest.Password,
 		})
+	})
+
+	router.PUT("/me", func(c *gin.Context){
+		// Email, Password
+
+		type MeRequest struct {
+			Email string `json:"email" binding:"required"`
+			Password string `json: "password"`
+		}
+		var meRequest MeRequest
+
+		if err := c.BindJSON(&meRequest); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"email": meRequest.Email,
+			"password": meRequest.Password,
+		})
+	})
+
+	router.PATCH("/me", func(c *gin.Context){
+		// Email, Password
+
+		type MeRequest struct {
+			Email string `json:"email" binding:"required"`
+			Password string `json: "password"`
+		}
+		var meRequest MeRequest
+
+		if err := c.BindJSON(&meRequest); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"email": meRequest.Email,
+			"password": meRequest.Password,
+		})
+	})
+
+	router.DELETE("/me/:id", func(c *gin.Context){
+		// Email, Password
+		
+		var id = c.Param("id")
+		c.JSON(http.StatusOK, gin.H{
+			"id":id,
+			"message":"Deleted",
+		})
+		
 	})
 
 	router.Run()
